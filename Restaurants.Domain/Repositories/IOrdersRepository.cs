@@ -2,7 +2,7 @@
 
 namespace Restaurants.Domain.Repositories; 
 public interface IOrdersRepository {
-    Task<IEnumerable<Order>> GetAllOrdersAsync();
-    Task<Order> GetOrderById(int id);
-    Task<int> AddOrder(Order entity);
+    //Task<IEnumerable<Order>> GetAllOrdersAsync();
+    //Task<Order> GetOrderById(int id);
+    //Task<int> AddOrder(Order entity);
 }

@@ -12,8 +12,8 @@ using Restaurants.Infrastructure.Persistence;
 namespace Restaurants.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantsDbContext))]
-    [Migration("20241102091447_addTheOptionOfNullableToRestaurants")]
-    partial class addTheOptionOfNullableToRestaurants
+    [Migration("20241111133435_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,8 +54,7 @@ namespace Restaurants.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FavoriteRestaurantId")
-                        .IsUnique();
+                    b.HasIndex("FavoriteRestaurantId");
 
                     b.ToTable("Customers");
                 });
@@ -90,6 +89,32 @@ namespace Restaurants.Infrastructure.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Dishes");
+                });
+
+            modelBuilder.Entity("Restaurants.Domain.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Restaurants.Domain.Entities.Restaurant", b =>
@@ -131,7 +156,7 @@ namespace Restaurants.Infrastructure.Migrations
                     b.HasOne("Restaurants.Domain.Entities.Restaurant", "Restaurant")
                         .WithOne("Customer")
                         .HasForeignKey("Restaurants.Domain.Entities.Customer", "FavoriteRestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.OwnsOne("Restaurants.Domain.Entities.Address", "Address", b1 =>
@@ -170,6 +195,25 @@ namespace Restaurants.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Restaurants.Domain.Entities.Order", b =>
+                {
+                    b.HasOne("Restaurants.Domain.Entities.Customer", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Restaurants.Domain.Entities.Restaurant", "Restaurant")
+                        .WithMany("Orders")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Restaurant");
+                });
+
             modelBuilder.Entity("Restaurants.Domain.Entities.Restaurant", b =>
                 {
                     b.OwnsOne("Restaurants.Domain.Entities.Address", "Address", b1 =>
@@ -197,12 +241,19 @@ namespace Restaurants.Infrastructure.Migrations
                     b.Navigation("Address");
                 });
 
+            modelBuilder.Entity("Restaurants.Domain.Entities.Customer", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("Restaurants.Domain.Entities.Restaurant", b =>
                 {
                     b.Navigation("Customer")
                         .IsRequired();
 
                     b.Navigation("Dishes");
+
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

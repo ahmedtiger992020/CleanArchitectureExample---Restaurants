@@ -8,8 +8,8 @@ using Restaurants.Domain.Repositories;
 namespace Restaurants.Application.Customers;
 internal class CustomersService(ICustomerRepository customersRepository, IRestaurantsRepository restaurantsRepository,  ILogger<CustomersService> logger, IMapper mapper) : ICustomersService {
     public async Task<int> AddCustomer(AddCustomer addCustomer) {
-        var restaurant = await GetRestaurant(addCustomer.FavoriteRestaurant);
-        addCustomer.Restaurant = restaurant;
+        //var restaurant = await GetRestaurant(addCustomer.FavoriteRestaurant);
+        //addCustomer.Restaurant = restaurant;
         var customer = mapper.Map<Customer>(addCustomer);
         var id = await customersRepository.AddCustomer(customer);
         return id;

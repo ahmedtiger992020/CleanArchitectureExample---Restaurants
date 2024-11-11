@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Restaurants.Application.Customers.Dtos;
-public class AddCustomer {
+public class AddCustomer
+{
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
@@ -12,8 +13,4 @@ public class AddCustomer {
     public string? Street { get; set; }
     public string? PostalCode { get; set; }
     public int FavoriteRestaurant { get; set; }
-    [JsonIgnore]
-    public Restaurant? Restaurant { get; set; }
-
-
 }

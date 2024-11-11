@@ -153,7 +153,7 @@ namespace Restaurants.Infrastructure.Migrations
                     b.HasOne("Restaurants.Domain.Entities.Restaurant", "Restaurant")
                         .WithOne("Customer")
                         .HasForeignKey("Restaurants.Domain.Entities.Customer", "FavoriteRestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.OwnsOne("Restaurants.Domain.Entities.Address", "Address", b1 =>

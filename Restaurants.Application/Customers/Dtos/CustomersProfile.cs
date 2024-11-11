@@ -24,7 +24,7 @@ public class CustomersProfile : Profile{
             }))
             .ForMember(d => d.Restaurant, opt => opt.MapFrom(src => src.FavoriteRestaurant))
             .ForMember(d => d.FavoriteRestaurantId, opt => opt.MapFrom(src => src.FavoriteRestaurant))
-            .ForMember(d => d.Restaurant, opt => opt.MapFrom(src => src.Restaurant));
+            .ForMember(d => d.Restaurant, opt => opt.Ignore());
 
     }
 
